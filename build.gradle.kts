@@ -81,6 +81,11 @@ tasks.named("publish") {
     dependsOn("publishPlugins")
 }
 
+detekt {
+    config = files("config/detekt/detekt.yml")
+    buildUponDefaultConfig = true
+}
+
 gradle.taskGraph.whenReady {
     val from = File("${rootProject.rootDir}/config/detekt/pre-commit")
     val to = File("${rootProject.rootDir}/.git/hooks/pre-commit")
