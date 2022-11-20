@@ -10,7 +10,7 @@ plugins {
     id("signing")
     id("com.gradle.plugin-publish") version "1.1.0"
 
-    id("io.gitlab.arturbosch.detekt") version "1.21.0"
+    id("io.gitlab.arturbosch.detekt") version "1.22.0"
 }
 
 repositories {
