@@ -12,7 +12,7 @@ In some projects, it is enough to run Kotlin/JS tests on _any_ available browser
 
 ```kotlin
 plugins {
-    id("com.goncalossilva.useanybrowser")
+    id("com.goncalossilva.useanybrowser") version "<version>"
 }
 
 kotlin {
