@@ -44,6 +44,7 @@ buildConfig {
     buildConfigField("String", "ARTIFACT_ID", "\"$artifactId\"")
     buildConfigField("String", "PLUGIN_ID", "\"$pluginId\"")
     buildConfigField("String", "VERSION", "\"$version\"")
+    useKotlinOutput { internalVisibility = true }
 }
 
 gradlePlugin {
