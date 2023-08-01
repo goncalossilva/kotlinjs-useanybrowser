@@ -4,6 +4,12 @@ Notable changes are documented in this file, whose format follows [Keep a Change
 
 ## [Unreleased]
 
+## [0.2.1] - 2023-08-01
+
+### Changed
+
+- Don't bundle the gradle plugin or stdlib
+
 ## [0.2.0] - 2023-07-31
 
 ### Changed
