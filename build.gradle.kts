@@ -83,7 +83,7 @@ tasks.named("publish") {
 }
 
 detekt {
-    config = files("config/detekt/detekt.yml")
+    config.setFrom("config/detekt/detekt.yml")
     buildUponDefaultConfig = true
 }
 
