@@ -4,6 +4,13 @@ Notable changes are documented in this file, whose format follows [Keep a Change
 
 ## [Unreleased]
 
+## [0.2.0] - 2023-07-31
+
+### Changed
+
+- Updated Kotlin to 1.9.0.
+- Updated docs to not mention the deprecated Kotlin/JS, now part of the multiplatform plugin.
+
 ## [0.1.1] - 2022-09-29
 
 ### Fixed
