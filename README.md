@@ -1,12 +1,12 @@
 # kotlinjs-useanybrowser
 
-Gradle plugin for using any available browser when testing under Kotlin/JS.
+Gradle plugin for using any available browser when testing JS under Kotlin Multiplatform.
 
-By default, Kotlin/JS requires setting browsers under test explicitly, which indirectly requires
-contributors (and CI) to agree upon which browser(s) to use under testing, and have them installed.
-The higher the number of contributors, the more cumbersome this can become.
+By default, the JS target requires setting browsers under test explicitly, which indirectly requires
+contributors (and CI) to agree about which browser(s) to use under testing, and have them installed.
+The higher the number of contributors, the more cumbersome this becomes.
 
-In some projects, it is enough to run Kotlin/JS tests on _any_ available browser.
+In some projects, it is enough to run tests on _any_ available browser.
 
 ## Usage
 
