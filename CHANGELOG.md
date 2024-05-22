@@ -4,6 +4,12 @@ Notable changes are documented in this file, whose format follows [Keep a Change
 
 ## [Unreleased]
 
+## [0.3.0] - 2024-05-23
+
+### Changed
+
+- Updated Kotlin to 2.0.0
+
 ## [0.2.1] - 2023-08-01
 
 ### Changed
