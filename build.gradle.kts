@@ -8,7 +8,7 @@ plugins {
     id("java-gradle-plugin")
     id("maven-publish")
     id("signing")
-    id("com.gradle.plugin-publish") version "1.2.2"
+    id("com.gradle.plugin-publish") version "1.3.0"
 
     id("io.gitlab.arturbosch.detekt") version "1.23.7"
 }
