@@ -3,7 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     kotlin("jvm") version "2.0.20"
 
-    id("com.github.gmazzo.buildconfig") version "5.4.0"
+    id("com.github.gmazzo.buildconfig") version "5.5.0"
 
     id("java-gradle-plugin")
     id("maven-publish")
