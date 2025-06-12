@@ -4,6 +4,8 @@ Notable changes are documented in this file, whose format follows [Keep a Change
 
 ## [Unreleased]
 
+## [0.4.0] - 2025-06-12
+
 ### Fixed
 
 - Declare dependency on "karma-detect-browser" in `applyToComplication` (fixes [goncalossilva/kotlinx-resources#108](https://github.com/goncalossilva/kotlinjs-useanybrowser/issues/108))
