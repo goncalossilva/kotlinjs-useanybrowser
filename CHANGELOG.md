@@ -8,7 +8,7 @@ Notable changes are documented in this file, whose format follows [Keep a Change
 
 ### Fixed
 
-- Declare dependency on "karma-detect-browser" in `applyToComplication` (fixes [goncalossilva/kotlinx-resources#108](https://github.com/goncalossilva/kotlinjs-useanybrowser/issues/108))
+- Declare dependency on "karma-detect-browser" in `applyToComplication` (fixes #108)
 
 ### Changed
 
