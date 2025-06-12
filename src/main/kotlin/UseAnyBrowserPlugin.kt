@@ -47,9 +47,9 @@ class UseAnyBrowserPlugin : KotlinCompilerPluginSupportPlugin {
     )
 
     override fun isApplicable(kotlinCompilation: KotlinCompilation<*>) =
-        kotlinCompilation is KotlinJsCompilation && kotlinCompilation.target.let {
-            it is KotlinJsSubTargetContainerDsl && it.isBrowserConfigured
-        } && kotlinCompilation.compilationName == KotlinCompilation.TEST_COMPILATION_NAME
+        kotlinCompilation is KotlinJsCompilation &&
+            kotlinCompilation.target.isBrowserConfigured &&
+            kotlinCompilation.compilationName == KotlinCompilation.TEST_COMPILATION_NAME
 
     override fun applyToCompilation(
         kotlinCompilation: KotlinCompilation<*>
