@@ -19,7 +19,7 @@ import org.jetbrains.kotlin.gradle.targets.js.testing.karma.KotlinKarma
  */
 fun KotlinKarma.useAnyBrowser() {
     // List all browsers so that the Kotlin plugin downloads their runners and captures failures.
-    // "karma-detect-browsers" figures out which browser to use, depending on what's installed.
+    // "karma-detect-browsers" will figure out which browser to use, depending on what's installed.
     useChromeHeadless()
     useChromeCanaryHeadless()
     useChromiumHeadless()
@@ -30,11 +30,6 @@ fun KotlinKarma.useAnyBrowser() {
     useOpera()
     useSafari()
     useIe()
-
-    // Depend on "karma-detect-browsers" for browser selection.
-    compilation.dependencies {
-        implementation(npm("karma-detect-browsers", "^2.3"))
-    }
 }
 
 class UseAnyBrowserPlugin : KotlinCompilerPluginSupportPlugin {
@@ -58,6 +53,10 @@ class UseAnyBrowserPlugin : KotlinCompilerPluginSupportPlugin {
             "$prefix${qualifiers.joinToString("") { it.replaceFirstChar(Char::titlecase) }}"
 
         val compilation = kotlinCompilation as KotlinJsCompilation
+        compilation.dependencies {
+            implementation(npm("karma-detect-browsers", "^2.3"))
+        }
+
         val target = compilation.target
         val taskName = getTaskName("selectBrowser", target.targetName)
         val project = target.project
