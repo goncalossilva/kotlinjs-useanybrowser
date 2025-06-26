@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "2.1.21"
+    kotlin("jvm") version "2.2.0"
 
     id("com.github.gmazzo.buildconfig") version "5.6.7"
 
@@ -20,16 +20,6 @@ repositories {
 dependencies {
     compileOnly(kotlin("gradle-plugin"))
     compileOnly(kotlin("stdlib"))
-}
-
-tasks.withType<JavaCompile>().configureEach {
-    options.release.set(8)
-}
-
-tasks.withType<KotlinCompile>().configureEach {
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
 }
 
 val artifactId: String by project
