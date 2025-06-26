@@ -22,16 +22,6 @@ dependencies {
     compileOnly(kotlin("stdlib"))
 }
 
-tasks.withType<JavaCompile>().configureEach {
-    options.release.set(8)
-}
-
-tasks.withType<KotlinCompile>().configureEach {
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
-}
-
 val artifactId: String by project
 val pluginId = "$group.$artifactId"
 
