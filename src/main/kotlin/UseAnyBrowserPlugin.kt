@@ -64,7 +64,8 @@ class UseAnyBrowserPlugin : KotlinCompilerPluginSupportPlugin {
         val confFile = project.projectDir
             .resolve("karma.config.d")
             .apply { mkdirs() }
-            .resolve("select-browser.js")
+            // Avoid cleanup races when multiple browser targets exist in the same project (e.g., js/wasmJs).
+            .resolve("useanybrowser-${target.targetName}.js")
 
         val selectBrowserTask = tasks.register(taskName) { task ->
             @Suppress("ObjectLiteralToLambda")
