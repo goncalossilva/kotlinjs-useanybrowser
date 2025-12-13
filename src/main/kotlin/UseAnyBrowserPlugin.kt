@@ -76,7 +76,16 @@ class UseAnyBrowserPlugin : KotlinCompilerPluginSupportPlugin {
                         @Suppress("MaxLineLength")
                         confWriter.println(
                             """
-                            |config.frameworks.push("detectBrowsers");
+                            |config.frameworks = config.frameworks || [];
+                            |if (config.frameworks.indexOf("detectBrowsers") === -1) {
+                            |    config.frameworks.push("detectBrowsers");
+                            |}
+                            |
+                            |config.plugins = config.plugins || [];
+                            |if (config.plugins.indexOf("karma-detect-browsers") === -1) {
+                            |    config.plugins.push("karma-detect-browsers");
+                            |}
+                            |
                             |config.set({
                             |    browsers: [],
                             |    detectBrowsers: {
@@ -84,14 +93,21 @@ class UseAnyBrowserPlugin : KotlinCompilerPluginSupportPlugin {
                             |        usePhantomJS: false,
                             |        preferHeadless: true,
                             |        postDetection: function(browsers) {
-                            |            browsers = browsers.filter((browser) => browser.includes("Headless")) || browsers;
-                            |            browsers = browsers.filter((browser) => browser.includes("Chrom")) || browsers;
-                            |            browsers = browsers.slice(0, 1);
-                            |            return browsers;
+                            |            var candidates = browsers.filter(function (browser) {
+                            |                return browser.indexOf("Headless") !== -1;
+                            |            });
+                            |            if (!candidates.length) candidates = browsers;
+                            |
+                            |            var chrom = candidates.filter(function (browser) {
+                            |                return browser.indexOf("Chrom") !== -1;
+                            |            });
+                            |            if (chrom.length) candidates = chrom;
+                            |
+                            |            candidates = candidates.slice(0, 1);
+                            |            return candidates;
                             |        }
                             |    }
                             |});
-                            |config.plugins.push("karma-detect-browsers");
                             """.trimMargin()
                         )
                     }
