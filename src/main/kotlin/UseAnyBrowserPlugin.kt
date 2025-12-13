@@ -32,6 +32,62 @@ fun KotlinKarma.useAnyBrowser() {
     useIe()
 }
 
+@Suppress("MaxLineLength")
+private val SELECT_BROWSER_KARMA_CONFIG: String = """
+    |config.frameworks = config.frameworks || [];
+    |if (config.frameworks.indexOf("detectBrowsers") === -1) {
+    |    config.frameworks.push("detectBrowsers");
+    |}
+    |
+    |config.plugins = config.plugins || [];
+    |if (config.plugins.indexOf("karma-detect-browsers") === -1) {
+    |    config.plugins.push("karma-detect-browsers");
+    |}
+    |
+    |var IS_LINUX = process.platform === "linux";
+    |if (IS_LINUX) {
+    |    config.customLaunchers = config.customLaunchers || {};
+    |    // Some Linux CI/container environments can't use Chromium's sandbox ("No usable sandbox!" error).
+    |    // Provide `--no-sandbox` variants and use them on Linux.
+    |    config.customLaunchers.ChromeHeadlessNoSandbox = { base: "ChromeHeadless", flags: ["--no-sandbox"] };
+    |    config.customLaunchers.ChromeCanaryHeadlessNoSandbox = { base: "ChromeCanaryHeadless", flags: ["--no-sandbox"] };
+    |    config.customLaunchers.ChromiumHeadlessNoSandbox = { base: "ChromiumHeadless", flags: ["--no-sandbox"] };
+    |}
+    |
+    |config.set({
+    |    browsers: [],
+    |    detectBrowsers: {
+    |        enabled: true,
+    |        usePhantomJS: false,
+    |        preferHeadless: true,
+    |        postDetection: function(browsers) {
+    |            var candidates = browsers.filter(function (browser) {
+    |                return browser.indexOf("Headless") !== -1;
+    |            });
+    |            if (!candidates.length) candidates = browsers;
+    |
+    |            var chrom = candidates.filter(function (browser) {
+    |                return browser.indexOf("Chrom") !== -1;
+    |            });
+    |            if (chrom.length) candidates = chrom;
+    |
+    |            candidates = candidates.slice(0, 1);
+    |
+    |            if (IS_LINUX) {
+    |                candidates = candidates.map(function (browser) {
+    |                    if (browser === "ChromeHeadless") return "ChromeHeadlessNoSandbox";
+    |                    if (browser === "ChromeCanaryHeadless") return "ChromeCanaryHeadlessNoSandbox";
+    |                    if (browser === "ChromiumHeadless") return "ChromiumHeadlessNoSandbox";
+    |                    return browser;
+    |                });
+    |            }
+    |
+    |            return candidates;
+    |        }
+    |    }
+    |});
+    |""".trimMargin()
+
 class UseAnyBrowserPlugin : KotlinCompilerPluginSupportPlugin {
     override fun getCompilerPluginId() = BuildConfig.PLUGIN_ID
 
@@ -73,43 +129,7 @@ class UseAnyBrowserPlugin : KotlinCompilerPluginSupportPlugin {
                 override fun execute(_task: Task) {
                     // Create karma configuration file in the expected location, deleting when done.
                     confFile.printWriter().use { confWriter ->
-                        @Suppress("MaxLineLength")
-                        confWriter.println(
-                            """
-                            |config.frameworks = config.frameworks || [];
-                            |if (config.frameworks.indexOf("detectBrowsers") === -1) {
-                            |    config.frameworks.push("detectBrowsers");
-                            |}
-                            |
-                            |config.plugins = config.plugins || [];
-                            |if (config.plugins.indexOf("karma-detect-browsers") === -1) {
-                            |    config.plugins.push("karma-detect-browsers");
-                            |}
-                            |
-                            |config.set({
-                            |    browsers: [],
-                            |    detectBrowsers: {
-                            |        enabled: true,
-                            |        usePhantomJS: false,
-                            |        preferHeadless: true,
-                            |        postDetection: function(browsers) {
-                            |            var candidates = browsers.filter(function (browser) {
-                            |                return browser.indexOf("Headless") !== -1;
-                            |            });
-                            |            if (!candidates.length) candidates = browsers;
-                            |
-                            |            var chrom = candidates.filter(function (browser) {
-                            |                return browser.indexOf("Chrom") !== -1;
-                            |            });
-                            |            if (chrom.length) candidates = chrom;
-                            |
-                            |            candidates = candidates.slice(0, 1);
-                            |            return candidates;
-                            |        }
-                            |    }
-                            |});
-                            """.trimMargin()
-                        )
+                        confWriter.print(SELECT_BROWSER_KARMA_CONFIG)
                     }
                 }
             })
