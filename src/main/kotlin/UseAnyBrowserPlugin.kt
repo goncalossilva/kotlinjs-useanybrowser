@@ -32,56 +32,52 @@ fun KotlinKarma.useAnyBrowser() {
     useIe()
 }
 
-@Suppress("MaxLineLength")
 private val SELECT_BROWSER_KARMA_CONFIG: String = """
     |config.frameworks = config.frameworks || [];
-    |if (config.frameworks.indexOf("detectBrowsers") === -1) {
+    |if (!config.frameworks.includes("detectBrowsers")) {
     |    config.frameworks.push("detectBrowsers");
     |}
-    |
     |config.plugins = config.plugins || [];
-    |if (config.plugins.indexOf("karma-detect-browsers") === -1) {
+    |if (!config.plugins.includes("karma-detect-browsers")) {
     |    config.plugins.push("karma-detect-browsers");
     |}
-    |
-    |var IS_LINUX = process.platform === "linux";
-    |if (IS_LINUX) {
+    |const CHROMIUM_BROWSERS = [
+    |    "Chrome",
+    |    "ChromeHeadless",
+    |    "ChromeCanary",
+    |    "ChromeCanaryHeadless",
+    |    "Chromium",
+    |    "ChromiumHeadless",
+    |];
+    |if (process.platform === "linux") {
     |    config.customLaunchers = config.customLaunchers || {};
-    |    // Some Linux CI/container environments can't use Chromium's sandbox ("No usable sandbox!" error).
+    |    // Some Linux environments can't use Chromium's sandbox ("No usable sandbox!" error).
     |    // Provide `--no-sandbox` variants and use them on Linux.
-    |    config.customLaunchers.ChromeHeadlessNoSandbox = { base: "ChromeHeadless", flags: ["--no-sandbox"] };
-    |    config.customLaunchers.ChromeCanaryHeadlessNoSandbox = { base: "ChromeCanaryHeadless", flags: ["--no-sandbox"] };
-    |    config.customLaunchers.ChromiumHeadlessNoSandbox = { base: "ChromiumHeadless", flags: ["--no-sandbox"] };
+    |    const flags = ["--no-sandbox"];
+    |    CHROMIUM_BROWSERS.forEach(function (base) {
+    |        config.customLaunchers[base + "NoSandbox"] = { base, flags };
+    |    });
     |}
-    |
     |config.set({
-    |    browsers: [],
     |    detectBrowsers: {
     |        enabled: true,
     |        usePhantomJS: false,
     |        preferHeadless: true,
-    |        postDetection: function(browsers) {
+    |        postDetection: function (browsers) {
     |            var candidates = browsers.filter(function (browser) {
-    |                return browser.indexOf("Headless") !== -1;
-    |            });
-    |            if (!candidates.length) candidates = browsers;
-    |
-    |            var chrom = candidates.filter(function (browser) {
     |                return browser.indexOf("Chrom") !== -1;
     |            });
-    |            if (chrom.length) candidates = chrom;
-    |
+    |            if (!candidates.length) {
+    |                candidates = browsers;
+    |            }
     |            candidates = candidates.slice(0, 1);
-    |
-    |            if (IS_LINUX) {
+    |            if (process.platform === "linux") {
     |                candidates = candidates.map(function (browser) {
-    |                    if (browser === "ChromeHeadless") return "ChromeHeadlessNoSandbox";
-    |                    if (browser === "ChromeCanaryHeadless") return "ChromeCanaryHeadlessNoSandbox";
-    |                    if (browser === "ChromiumHeadless") return "ChromiumHeadlessNoSandbox";
-    |                    return browser;
+    |                    return CHROMIUM_BROWSERS.includes(browser)
+    |                        ? browser + "NoSandbox"
+    |                        : browser;
     |                });
     |            }
-    |
     |            return candidates;
     |        }
     |    }
