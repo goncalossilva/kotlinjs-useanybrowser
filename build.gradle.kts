@@ -20,6 +20,9 @@ repositories {
 dependencies {
     compileOnly(kotlin("gradle-plugin"))
     compileOnly(kotlin("stdlib"))
+
+    testImplementation(gradleTestKit())
+    testImplementation(kotlin("test"))
 }
 
 val artifactId: String by project
@@ -58,11 +61,10 @@ gradlePlugin {
 }
 
 signing {
-    // Use `signingKey` and `signingPassword` properties to sign artifacts, if provided.
-    // Otherwise, default to `signing.keyId`, `signing.password` and `signing.secretKeyRingFile`.
     val signingKey: String? by project
     val signingPassword: String? by project
-    if (signingKey != null && signingPassword != null) {
+    isRequired = signingKey != null && signingPassword != null
+    if (isRequired) {
         useInMemoryPgpKeys(signingKey, signingPassword)
     }
     sign(publishing.publications)
