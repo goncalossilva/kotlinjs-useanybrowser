@@ -59,6 +59,7 @@ private val SELECT_BROWSER_KARMA_CONFIG: String = """
     |    });
     |}
     |config.set({
+    |    browsers: [],
     |    detectBrowsers: {
     |        enabled: true,
     |        usePhantomJS: false,
