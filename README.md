@@ -29,10 +29,12 @@ kotlin {
 ```
 
 After this, browser tests will run on any available browser, preferring headless variants first,
-and Chrome variants second.
+and Chromium variants second.
 
-On Linux, Chromium-based headless runs may fail in CI/container environments with a
-`No usable sandbox!` error. To avoid this, the plugin uses `--no-sandbox`.
+### No sandbox
+
+Some Linux environments require disabling the sandbox for Chromium-based browsers, or execution
+fails with a "No usable sandbox!" error. This is done automatically.
 
 ## License
 
