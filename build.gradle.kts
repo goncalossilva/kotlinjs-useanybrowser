@@ -1,4 +1,5 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import io.gitlab.arturbosch.detekt.Detekt
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     kotlin("jvm") version "2.4.20"
@@ -23,6 +24,17 @@ dependencies {
 
     testImplementation(gradleTestKit())
     testImplementation(kotlin("test"))
+}
+
+tasks.withType<JavaCompile>().configureEach {
+    options.release.set(17)
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_17)
+        freeCompilerArgs.add("-Xjdk-release=17")
+    }
 }
 
 val artifactId: String by project
@@ -72,6 +84,10 @@ signing {
 
 tasks.named("publish") {
     dependsOn("publishPlugins")
+}
+
+tasks.withType<Detekt>().configureEach {
+    jvmTarget = "17"
 }
 
 detekt {
