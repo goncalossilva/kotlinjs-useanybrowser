@@ -2,11 +2,5 @@
   "extends": [
     "config:base",
     ":disableDependencyDashboard"
-  ],
-  "packageRules": [
-    {
-      "matchPackageNames": ["java-jdk"],
-      "allowedVersions": "/^17(?:\\.|$)/"
-    }
   ]
 }
